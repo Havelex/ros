@@ -1,0 +1,1 @@
+/home/havelex/repos/ros/target/x86_64-ros/debug/libros.rlib: /home/havelex/repos/ros/src/gdt.rs /home/havelex/repos/ros/src/interrupts.rs /home/havelex/repos/ros/src/lib.rs /home/havelex/repos/ros/src/memory.rs /home/havelex/repos/ros/src/serial.rs /home/havelex/repos/ros/src/vga_buffer.rs

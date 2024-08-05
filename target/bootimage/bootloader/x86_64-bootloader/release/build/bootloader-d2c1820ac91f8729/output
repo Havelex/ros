@@ -1,0 +1,7 @@
+cargo:rerun-if-changed=/home/havelex/repos/ros/Cargo.toml
+cargo:rustc-link-search=native=/home/havelex/repos/ros/target/bootimage/bootloader/x86_64-bootloader/release/build/bootloader-d2c1820ac91f8729/out
+cargo:rustc-link-lib=static=kernel_bin-ros
+cargo:rerun-if-env-changed=KERNEL
+cargo:rerun-if-env-changed=KERNEL_MANIFEST
+cargo:rerun-if-changed=/home/havelex/repos/ros/target/x86_64-ros/debug/ros
+cargo:rerun-if-changed=build.rs
