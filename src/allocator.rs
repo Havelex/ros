@@ -10,8 +10,6 @@ use x86_64::{
     VirtAddr,
 };
 
-use crate::memory::{self, BootInfoFrameAllocator};
-
 #[global_allocator]
 static ALLOCATOR: Locked<FixedSizeBlockAllocator> = Locked::new(FixedSizeBlockAllocator::new());
 

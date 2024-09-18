@@ -2,6 +2,7 @@ use super::{align_up, Locked};
 use alloc::alloc::{GlobalAlloc, Layout};
 use core::ptr;
 
+#[allow(unused_macros)]
 macro_rules! try_null {
     ( $e:expr ) => {
         match $e {

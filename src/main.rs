@@ -1,18 +1,13 @@
 #![no_std]
 #![no_main]
 #![feature(custom_test_frameworks)]
-#![test_runner(ros::test_runner)]
 #![reexport_test_harness_main = "test_main"]
 
 extern crate alloc;
 
 use bootloader::{entry_point, BootInfo};
 use core::panic::PanicInfo;
-use ros::{
-    print, println,
-    sleeping::sleep,
-    vga_buffer::{self, WRITER},
-};
+use ros::{print, println, sleeping::sleep, vga_buffer::WRITER};
 
 entry_point!(kernel_main);
 
@@ -20,7 +15,7 @@ fn kernel_main(boot_info: &'static BootInfo) -> ! {
     use ros::allocator;
     use ros::memory;
     use ros::memory::BootInfoFrameAllocator;
-    use x86_64::{structures::paging::Page, VirtAddr};
+    use x86_64::VirtAddr;
 
     ros::init();
 

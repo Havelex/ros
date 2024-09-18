@@ -1,7 +1,5 @@
 use core::arch::asm;
 
-use crate::interrupts::PICS;
-
 const COMMAND_PORT: u16 = 0x43;
 const CHANNEL_0_PORT: u16 = 0x40;
 const DEFAULT_FREQUENCY: f64 = 1_193_181.66;

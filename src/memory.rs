@@ -3,7 +3,7 @@ use bootloader::bootinfo::MemoryRegionType;
 use x86_64::structures::paging::OffsetPageTable;
 use x86_64::{structures::paging::PageTable, VirtAddr};
 use x86_64::{
-    structures::paging::{FrameAllocator, Mapper, Page, PhysFrame, Size4KiB},
+    structures::paging::{FrameAllocator, PhysFrame, Size4KiB},
     PhysAddr,
 };
 
@@ -27,12 +27,6 @@ impl BootInfoFrameAllocator {
             .map(|r| r.range.start_addr()..r.range.end_addr())
             .flat_map(|r| r.step_by(4096))
             .map(|addr| PhysFrame::containing_address(PhysAddr::new(addr)))
-
-        // let regions = self.memory_map.iter();
-        // let usable_regions = regions.filter(|r| r.region_type == MemoryRegionType::Usable);
-        // let addr_ranges = usable_regions.map(|r| r.range.start_addr()..r.range.end_addr());
-        // let frame_addresses = addr_ranges.flat_map(|r| r.step_by(4096));
-        // frame_addresses.map(|addr| PhysFrame::containing_address(PhysAddr::new(addr)))
     }
 }
 pub struct EmptyFrameAllocator;
