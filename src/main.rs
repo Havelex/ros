@@ -6,11 +6,13 @@
 
 extern crate alloc;
 
-use alloc::{boxed::Box, rc::Rc, vec, vec::Vec};
 use bootloader::{entry_point, BootInfo};
 use core::panic::PanicInfo;
-use ros::println;
-use ros::task::{simple_executor::SimpleExecutor, Task};
+use ros::{
+    print, println,
+    sleeping::sleep,
+    vga_buffer::{self, WRITER},
+};
 
 entry_point!(kernel_main);
 
@@ -20,35 +22,38 @@ fn kernel_main(boot_info: &'static BootInfo) -> ! {
     use ros::memory::BootInfoFrameAllocator;
     use x86_64::{structures::paging::Page, VirtAddr};
 
-    println!("Hello World{}", "!");
     ros::init();
 
+    println!("Initializing memory:");
     let phys_mem_offset = VirtAddr::new(boot_info.physical_memory_offset);
+    print!("Initializing mapper...");
     let mut mapper = unsafe { memory::init(phys_mem_offset) };
+    println!("[OK]");
+    print!("Initializing frame allocator...");
     let mut frame_allocator = unsafe { BootInfoFrameAllocator::init(&boot_info.memory_map) };
+    println!("[OK]");
+    println!("Memory: [OK]");
 
     allocator::init_heap(&mut mapper, &mut frame_allocator).expect("heap initialization failed");
-    // end init
+    //end mem init
 
-    let mut executor = SimpleExecutor::new();
-    executor.spawn(Task::new(example_task()));
-    executor.run();
+    print!("\nInit complete");
+    for _ in 0..3 {
+        sleep(500);
+        print!(".");
+    }
+    sleep(1000);
+    {
+        WRITER.lock().clear();
+    }
+
+    // end init
 
     // test main
     #[cfg(test)]
     test_main();
 
-    println!("It did not crash!");
     ros::hlt_loop();
-}
-
-async fn async_number() -> u32 {
-    42
-}
-
-async fn example_task() {
-    let number = async_number().await;
-    println!("async number: {}", number);
 }
 
 #[cfg(not(test))]

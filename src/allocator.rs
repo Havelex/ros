@@ -10,6 +10,8 @@ use x86_64::{
     VirtAddr,
 };
 
+use crate::memory::{self, BootInfoFrameAllocator};
+
 #[global_allocator]
 static ALLOCATOR: Locked<FixedSizeBlockAllocator> = Locked::new(FixedSizeBlockAllocator::new());
 
@@ -62,3 +64,10 @@ pub fn init_heap(
 fn align_up(addr: usize, align: usize) -> usize {
     (addr + align - 1) & !(align - 1)
 }
+
+// pub fn init() {
+//     let phys_mem_offset = VirtAddr::new(boot_info.physical_memory_offset);
+//     let mut mapper = unsafe { memory::init(phys_mem_offset) };
+//     let mut frame_allocator = unsafe { BootInfoFrameAllocator::init(&boot_info.memory_map) };
+//     init_heap(&mut mapper, &mut frame_allocator).expect("heap initialization failed");
+// }

@@ -45,3 +45,7 @@ harness = false
 [[test]]
 name = "stack_overflow"
 harness = false
+
+[[test]]
+name = "pit_config"
+harness = false

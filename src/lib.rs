@@ -15,7 +15,9 @@ pub mod gdt;
 pub mod interrupts;
 pub mod memory;
 pub mod serial;
+pub mod sleeping;
 pub mod task;
+pub mod timer;
 pub mod vga_buffer;
 
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
