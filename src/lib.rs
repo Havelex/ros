@@ -17,6 +17,7 @@ pub mod serial;
 pub mod sleeping;
 pub mod task;
 pub mod timer;
+pub mod utils;
 pub mod vga_buffer;
 
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
@@ -50,7 +51,6 @@ where
     }
 }
 
-#[cfg(test)]
 pub fn test_runner(tests: &[&dyn Testable]) {
     serial_println!("Running {} tests", tests.len());
     for test in tests {
@@ -61,6 +61,8 @@ pub fn test_runner(tests: &[&dyn Testable]) {
 
 #[cfg(test)]
 use bootloader::{entry_point, BootInfo};
+
+use timer::pit::set_pit_frequency;
 
 #[cfg(test)]
 entry_point!(test_kernel_main);
@@ -88,6 +90,9 @@ pub fn test_panic_handler(info: &PanicInfo) -> ! {
 }
 
 pub fn init() {
+    print!("Configuring timer...");
+    set_pit_frequency(1000);
+    println!("[OK]");
     gdt::init();
     interrupts::init_idt();
     unsafe { interrupts::PICS.lock().initialize() };

@@ -58,8 +58,4 @@ pub fn init() {
         load_tss(GDT.1.tss_selector);
     }
     println!("[OK]");
-
-    print!("Configuring timer...");
-    set_pit_frequency(1000.0);
-    println!("[OK]");
 }

@@ -1,6 +1,7 @@
 #![no_std]
 #![no_main]
 #![feature(custom_test_frameworks)]
+#![test_runner(ros::test_runner)]
 #![reexport_test_harness_main = "test_main"]
 
 extern crate alloc;
@@ -21,10 +22,10 @@ fn kernel_main(boot_info: &'static BootInfo) -> ! {
 
     println!("Initializing memory:");
     let phys_mem_offset = VirtAddr::new(boot_info.physical_memory_offset);
-    print!("Initializing mapper...");
+    print!("    Initializing mapper...");
     let mut mapper = unsafe { memory::init(phys_mem_offset) };
     println!("[OK]");
-    print!("Initializing frame allocator...");
+    print!("    Initializing frame allocator...");
     let mut frame_allocator = unsafe { BootInfoFrameAllocator::init(&boot_info.memory_map) };
     println!("[OK]");
     println!("Memory: [OK]");
@@ -41,7 +42,6 @@ fn kernel_main(boot_info: &'static BootInfo) -> ! {
     {
         WRITER.lock().clear();
     }
-
     // end init
 
     // test main

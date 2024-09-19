@@ -1,3 +1,6 @@
+use core::sync::atomic::AtomicUsize;
+use core::sync::atomic::Ordering;
+
 use crate::gdt;
 use crate::hlt_loop;
 use crate::print;
@@ -62,10 +65,11 @@ extern "x86-interrupt" fn double_fault_handler(
     panic!("EXCEPTION: DOUBLE FAULT\n{:#?}", stack_frame);
 }
 
-pub static mut COUNTER: usize = 0;
+pub static mut TICKS: AtomicUsize = AtomicUsize::new(0);
 extern "x86-interrupt" fn timer_interrupt_handler(_stack_frame: InterruptStackFrame) {
     unsafe {
-        COUNTER += 1;
+        TICKS.fetch_add(1, Ordering::Relaxed);
+
         PICS.lock()
             .notify_end_of_interrupt(InterruptIndex::Timer.as_u8());
     }
