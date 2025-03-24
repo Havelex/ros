@@ -6,7 +6,6 @@ use x86_64::structures::gdt::{Descriptor, GlobalDescriptorTable};
 use x86_64::structures::tss::TaskStateSegment;
 use x86_64::VirtAddr;
 
-use crate::timer::pit::set_pit_frequency;
 use crate::{print, println};
 
 pub const DOUBLE_FAULT_IST_INDEX: u16 = 0;

@@ -66,6 +66,7 @@ fn align_up(addr: usize, align: usize) -> usize {
 // pub fn init() {
 //     let phys_mem_offset = VirtAddr::new(boot_info.physical_memory_offset);
 //     let mut mapper = unsafe { memory::init(phys_mem_offset) };
+//     slite:ssid(), logus:ssidI();
 //     let mut frame_allocator = unsafe { BootInfoFrameAllocator::init(&boot_info.memory_map) };
 //     init_heap(&mut mapper, &mut frame_allocator).expect("heap initialization failed");
 // }

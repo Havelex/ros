@@ -8,7 +8,9 @@ extern crate alloc;
 
 use bootloader::{entry_point, BootInfo};
 use core::panic::PanicInfo;
-use ros::{print, println, sleeping::sleep, vga_buffer::WRITER};
+use ros::{
+    print, println, sleeping::sleep, task::simple_executor::SimpleExecutor, vga_buffer::WRITER,
+};
 
 entry_point!(kernel_main);
 
@@ -28,10 +30,14 @@ fn kernel_main(boot_info: &'static BootInfo) -> ! {
     print!("    Initializing frame allocator...");
     let mut frame_allocator = unsafe { BootInfoFrameAllocator::init(&boot_info.memory_map) };
     println!("[OK]");
+    print!("    Initializing heap...");
+    allocator::init_heap(&mut mapper, &mut frame_allocator).expect("heap initialization failed");
+    println!("[OK]");
     println!("Memory: [OK]");
 
-    allocator::init_heap(&mut mapper, &mut frame_allocator).expect("heap initialization failed");
-    //end mem init
+    print!("Initializing executor...");
+    let executor = SimpleExecutor::new();
+    println!("[OK]");
 
     print!("\nInit complete");
     for _ in 0..3 {
@@ -39,9 +45,7 @@ fn kernel_main(boot_info: &'static BootInfo) -> ! {
         print!(".");
     }
     sleep(1000);
-    {
-        WRITER.lock().clear();
-    }
+    WRITER.lock().clear();
     // end init
 
     // test main
